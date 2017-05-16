@@ -30,6 +30,20 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.MyViewHold
         notifyDataSetChanged();
     }
 
+    //添加一条数据
+    public void addData(int position){
+        mList.add(position,"insert one");
+        notifyItemInserted(position);
+        notifyItemRangeChanged(position,mList.size()-position);
+    }
+
+    //移除一条数据
+    public void removeData(int position){
+        mList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position,mList.size()-position);
+    }
+
     // 创建ViewHolder视图
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

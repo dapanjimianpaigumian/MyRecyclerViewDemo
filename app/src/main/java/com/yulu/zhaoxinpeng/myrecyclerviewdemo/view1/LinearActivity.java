@@ -6,7 +6,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.yulu.zhaoxinpeng.myrecyclerviewdemo.R;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/5/16.
@@ -42,8 +42,8 @@ public class LinearActivity extends AppCompatActivity {
     //设置数据源
     private void initData() {
         mList = new ArrayList<>();
-        for (int i='A';i<'z';i++){
-            mList.add(""+(char)i);
+        for (int i = 'A'; i < 'z'; i++) {
+            mList.add("" + (char) i);
         }
         mLinearAdapter.setData(mList);
     }
@@ -56,11 +56,23 @@ public class LinearActivity extends AppCompatActivity {
          */
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
 
+        //水平布局
+        //mRecyclerview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+
+        // GridLayoutManager 网格布局
+        //mRecyclerview.setLayoutManager(new GridLayoutManager(this,4));
+
+        // StaggeredGridLayoutManager 一般的瀑布流布局
+        //mRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));
+
         // 2. 如果想要添加item的添加和删除的动画,提供了一个可以直接使用的动画：DefaultItemAnimator
         mRecyclerview.setItemAnimator(new DefaultItemAnimator());
 
         // 3. 如果想要设置，可以设置分割线,默认提供的：DividerItemDecoration，可以自定义，可以item布局里面自己去设置。
-        mRecyclerview.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        //水平分割线
+        mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //竖直分割线
+        mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
 
         // 4. 设置适配器
         mLinearAdapter = new LinearAdapter();
@@ -70,13 +82,19 @@ public class LinearActivity extends AppCompatActivity {
         mLinearAdapter.setOnItemClick(new LinearAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(LinearActivity.this, "click: 短"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LinearActivity.this, "click: 短" + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemLongClick(int position) {
-                Toast.makeText(LinearActivity.this, "click: 长"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LinearActivity.this, "click: 长" + position, Toast.LENGTH_SHORT).show();
+                mLinearAdapter.removeData(position);
             }
         });
+    }
+
+    @OnClick(R.id.button)
+    public void onViewClicked() {
+        mLinearAdapter.addData(1);
     }
 }
