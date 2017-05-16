@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MyRecyclerViewDemo</string>
+    <string name="normal">普通</string>
+</resources>
