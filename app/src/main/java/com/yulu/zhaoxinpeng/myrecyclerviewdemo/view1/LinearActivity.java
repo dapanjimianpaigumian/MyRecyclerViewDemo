@@ -6,11 +6,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.Toast;
 
 import com.yulu.zhaoxinpeng.myrecyclerviewdemo.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -88,9 +90,93 @@ public class LinearActivity extends AppCompatActivity {
             @Override
             public void onItemLongClick(int position) {
                 Toast.makeText(LinearActivity.this, "click: 长" + position, Toast.LENGTH_SHORT).show();
-                mLinearAdapter.removeData(position);
+                //设置长按删除
+                //mLinearAdapter.removeData(position);
             }
         });
+        // 6. 关于拖动和滑动的处理：借助一个类ItemTouchHelper来完成
+//        ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+//
+//            /**
+//             * 方向：
+//             * dragdirs：拖动的方向：UP、DOWN、START、END、LEFT、RIGHT
+//             * swipedirs:滑动的方向：UP、DOWN、START、END、LEFT、RIGHT
+//             * 设置为0的时候，表示没有此项功能。
+//             */
+//
+//            // 拿到设置的移动方向：滑动的方向、拖动的方向
+//            @Override
+//            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+//
+//                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+//                int swipeFlags = ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT;
+//
+//                return makeMovementFlags(dragFlags,swipeFlags);
+//            }
+//
+//            // 拖动的事件处理
+//            @Override
+//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            // 滑动的事件处理
+//            @Override
+//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+//
+//            }
+//        };
+
+        /**
+         * 6.本次我们借助一个类simplecallback来完成拖动和滑动
+         * simplecallback简易处理了一下callback的getMovementFlags,需要在构造方法的参数里面传入相应的拖拽和滑动的方向。
+         * 括号中两个参数：1 可以向上或向下拖动
+         *                2 向右滑动时删除
+         */
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+
+            // 拖动事件处理
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+
+                //获取拖动的ViewHolder的position
+                int fromPosition = viewHolder.getAdapterPosition();
+                //得到目标的ViewHolder的position
+                int toPosition = target.getAdapterPosition();
+
+                //向下移动
+                if (fromPosition < toPosition) {
+                    //分别把中间的这些item进行调换
+                    for (int i = fromPosition; i < toPosition; i++) {
+                        //数据的交换：通过集合工具类Collections
+                        Collections.swap(mList, i, i + 1);
+                    }
+                } else {
+                    //向上移动
+                    for (int i = fromPosition; i < toPosition; i++) {
+                        Collections.swap(mList, i, i - 1);
+                    }
+                }
+
+                //刷新一下数据
+                mLinearAdapter.itemMoved(fromPosition, toPosition, mList);
+
+                //表示点击被消费
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                //滑动时删除
+                int position = viewHolder.getAdapterPosition();
+                mLinearAdapter.removeData(position);
+            }
+        };
+
+        //创建TouchHelper
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        //设置作用的RecyclerView
+        itemTouchHelper.attachToRecyclerView(mRecyclerview);
     }
 
     @OnClick(R.id.button)

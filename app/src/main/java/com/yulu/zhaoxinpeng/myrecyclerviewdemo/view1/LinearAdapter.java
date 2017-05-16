@@ -44,6 +44,15 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.MyViewHold
         notifyItemRangeChanged(position,mList.size()-position);
     }
 
+    //item移动的刷新
+    public void itemMoved(int fromPosition,int toPosition,List<String> list){
+        mList.clear();
+        mList.addAll(list);
+        //刷新
+        notifyItemMoved(fromPosition,toPosition);
+        notifyItemRangeChanged(fromPosition,mList.size()-fromPosition);
+    }
+
     // 创建ViewHolder视图
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
