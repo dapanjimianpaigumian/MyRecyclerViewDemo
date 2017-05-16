@@ -21,6 +21,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/5/16.
+ * 利用RecyclerView实现 ListView效果
  */
 
 public class LinearActivity extends AppCompatActivity {

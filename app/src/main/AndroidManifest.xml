@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.yulu.zhaoxinpeng.myrecyclerviewdemo.view1.LinearActivity"/>
+        <activity android:name="com.yulu.zhaoxinpeng.myrecyclerviewdemo.view1.LinearActivity" />
+        <activity android:name="com.yulu.zhaoxinpeng.myrecyclerviewdemo.view2.StaggeredActivity"></activity>
     </application>
 
 </manifest>
