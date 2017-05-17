@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.yulu.zhaoxinpeng.myrecyclerviewdemo.view1.LinearActivity;
 import com.yulu.zhaoxinpeng.myrecyclerviewdemo.view2.StaggereAdapter;
 import com.yulu.zhaoxinpeng.myrecyclerviewdemo.view2.StaggeredActivity;
+import com.yulu.zhaoxinpeng.myrecyclerviewdemo.view3.SwipeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.normal_recyclerview, R.id.Staggere_recyclerview})
+    @OnClick({R.id.normal_recyclerview, R.id.Staggere_recyclerview,R.id.Swipelayout_listview})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.normal_recyclerview:
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.Staggere_recyclerview:
                 Intent intent2 = new Intent(MainActivity.this, StaggeredActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.Swipelayout_listview:
+                Intent intent3 = new Intent(MainActivity.this, SwipeActivity.class);
+                startActivity(intent3);
                 break;
         }
     }

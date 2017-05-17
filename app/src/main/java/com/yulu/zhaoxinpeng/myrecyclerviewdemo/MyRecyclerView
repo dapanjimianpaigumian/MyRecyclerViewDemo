@@ -1,0 +1,23 @@
+2017/5/16
+LinearAcivity
+RecyclerView普通模式，可以通过设置样式实现ListView的样子，GridView的样子。
+
+StaggeredActivity
+RecyclerView瀑布流模式，可以通过设置样式和item的随机高度实现瀑布流的样子。
+
+SwipeActivity
+ListView列表模式，实现了item的侧滑，类似安卓版QQ的会话列表效果。
+使用步骤：1> 添加依赖：compile 'com.daimajia.swipelayout:library:1.2.0'
+         2> 使ListView的适配器继承 BaseSwipeAdapter并实现所有方法。
+注意：当打开一个item后，每隔几行都会有一个item也呈现打开状态。
+      解决方法：
+                添加两个方法：
+                                @Override
+                                public int getViewTypeCount() {
+                                    return getCount();
+                                }
+
+                                @Override
+                                public int getItemViewType(int position) {
+                                    return position;
+                                }
